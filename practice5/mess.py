@@ -1,59 +1,54 @@
 # mess.py
 import tkinter as tk
-import random
+from tkinter import messagebox
 
-class ChaosApp:
+class TodoApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Focus Destroyer")
-        self.root.geometry("400x200")
+        self.root.title("Simple To-Do List")
+        self.root.geometry("400x450")
         self.root.resizable(False, False)
 
-        self.running = False
+        # Title
+        title = tk.Label(root, text="My To-Do List", font=("Segoe UI", 16, "bold"))
+        title.pack(pady=10)
 
-        self.label = tk.Label(root, text="Press Start Chaos.\nGood luck focusing.",
-                              font=("Segoe UI", 14))
-        self.label.pack(pady=30)
+        # Entry field
+        self.task_entry = tk.Entry(root, font=("Segoe UI", 12))
+        self.task_entry.pack(pady=10, padx=20, fill="x")
 
-        self.start_btn = tk.Button(root, text="Start Chaos", command=self.start_chaos,
-                                   font=("Segoe UI", 11), width=15)
-        self.start_btn.pack()
+        # Add button
+        add_btn = tk.Button(root, text="Add Task", command=self.add_task)
+        add_btn.pack(pady=5)
 
-        self.stop_btn = tk.Button(root, text="Stop Chaos", command=self.stop_chaos,
-                                  font=("Segoe UI", 11), width=15, state="disabled")
-        self.stop_btn.pack(pady=10)
+        # Listbox
+        self.task_listbox = tk.Listbox(root, font=("Segoe UI", 12), selectmode=tk.SINGLE)
+        self.task_listbox.pack(pady=15, padx=20, fill="both", expand=True)
 
-    def start_chaos(self):
-        self.running = True
-        self.start_btn.config(state="disabled")
-        self.stop_btn.config(state="normal")
-        self.move_window()
+        # Delete button
+        delete_btn = tk.Button(root, text="Delete Selected Task", command=self.delete_task)
+        delete_btn.pack(pady=5)
 
-    def stop_chaos(self):
-        self.running = False
-        self.start_btn.config(state="normal")
-        self.stop_btn.config(state="disabled")
+        # Enter key adds task
+        root.bind("<Return>", lambda event: self.add_task())
 
-    def move_window(self):
-        if not self.running:
+    def add_task(self):
+        task = self.task_entry.get().strip()
+        if task == "":
+            messagebox.showwarning("Warning", "Task cannot be empty.")
             return
+        self.task_listbox.insert(tk.END, task)
+        self.task_entry.delete(0, tk.END)
 
-        screen_width = self.root.winfo_screenwidth()
-        screen_height = self.root.winfo_screenheight()
-
-        window_width = 400
-        window_height = 200
-
-        x = random.randint(0, screen_width - window_width)
-        y = random.randint(0, screen_height - window_height)
-
-        self.root.geometry(f"{window_width}x{window_height}+{x}+{y}")
-
-        # move again after short delay
-        self.root.after(100, self.move_window)
+    def delete_task(self):
+        selected = self.task_listbox.curselection()
+        if not selected:
+            messagebox.showwarning("Warning", "Please select a task to delete.")
+            return
+        self.task_listbox.delete(selected[0])
 
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = ChaosApp(root)
+    app = TodoApp(root)
     root.mainloop()
