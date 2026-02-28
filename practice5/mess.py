@@ -29,7 +29,6 @@ class CookieClicker:
         self.auto_min_interval = 0.001 
         self.auto_speed_factor = 0.88  
 
-        # Rebalanced costs (fast + satisfying)
         self.click_upgrade_cost = 15.0
         self.multiplier_cost = 25.0
         self.auto_cost = 40.0
