@@ -26,8 +26,8 @@ class CookieClicker:
 
         self.auto_owned = False
         self.auto_interval = 10.0
-        self.auto_min_interval = 0.001  # 1 ms cap
-        self.auto_speed_factor = 0.88   # each upgrade makes interval *= 0.88 (faster)
+        self.auto_min_interval = 0.001 
+        self.auto_speed_factor = 0.88  
 
         # Rebalanced costs (fast + satisfying)
         self.click_upgrade_cost = 15.0
