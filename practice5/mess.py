@@ -19,13 +19,11 @@ class CookieClicker:
         self.root.geometry("520x620")
         self.root.resizable(False, False)
 
-        # ---------- Game state ----------
         self.money = 0.0
 
         self.base_click = 1.0
         self.multiplier = 1.0
 
-        # AutoClicker: interval seconds per auto-click (starts at 10s when bought, upgrades get faster)
         self.auto_owned = False
         self.auto_interval = 10.0
         self.auto_min_interval = 0.001  # 1 ms cap
