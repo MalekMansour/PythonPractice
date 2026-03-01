@@ -216,11 +216,10 @@ class CookieClicker:
         btn.config(state="normal", relief="raised")
 
         if affordable:
-            # pulse between two bright colors
             if self.pulse_on:
-                btn.config(bg="#ffd54a", fg="#1a1a1a")  # bright
+                btn.config(bg="#ffd54a", fg="#1a1a1a")  
             else:
-                btn.config(bg="#ffb300", fg="#1a1a1a")  # slightly darker
+                btn.config(bg="#ffb300", fg="#1a1a1a")  
         else:
             btn.config(bg="#2e2e38", fg="white")
 
@@ -229,7 +228,6 @@ class CookieClicker:
         self.update_ui()
         self.root.after(180, self.pulse_loop)
 
-    # ---------- UI update ----------
     def update_ui(self):
         self.money_label.config(text=self.money_text())
 
@@ -238,7 +236,6 @@ class CookieClicker:
         self.btn_mult.config(text=t2)
         self.btn_auto.config(text=t3)
 
-        # affordability checks
         can_click = self.money >= self.click_upgrade_cost
         can_mult = self.money >= self.multiplier_cost
 
@@ -249,10 +246,8 @@ class CookieClicker:
         self.set_button_style(self.btn_mult, can_mult)
         self.set_button_style(self.btn_auto, can_auto, disabled=auto_disabled)
 
-        # autosave quietly
         self.autosave()
 
-    # ---------- Actions ----------
     def click(self):
         self.money += self.click_value()
         self.update_ui()
@@ -292,7 +287,6 @@ class CookieClicker:
         self.auto_cost = max(1.0, self.auto_cost * self.auto_cost_scale)
         self.update_ui()
 
-    # ---------- Auto simulation loop (handles 1ms cap without spamming callbacks) ----------
     def auto_loop(self):
         now = time.perf_counter()
         dt = now - self._last_time
@@ -301,10 +295,8 @@ class CookieClicker:
         if self.auto_owned:
             self._auto_accumulator += dt
 
-            # how many auto-clicks should happen this frame?
             interval = max(self.auto_min_interval, self.auto_interval)
 
-            # cap the loop so the UI doesn't freeze if someone goes insane fast
             max_clicks_per_frame = 2000
 
             clicks = int(self._auto_accumulator // interval)
@@ -316,9 +308,7 @@ class CookieClicker:
 
         self.root.after(30, self.auto_loop)
 
-    # ---------- Save / Load ----------
     def autosave(self):
-        # silent autosave (no popup)
         try:
             data = self._serialize()
             with open(SAVE_FILE, "w", encoding="utf-8") as f:
@@ -380,7 +370,6 @@ class CookieClicker:
         self.bg_color = str(data.get("bg_color", self.bg_color))
         self.apply_bg_color(self.bg_color)
 
-    # ---------- Background color ----------
     def pick_bg_color(self):
         chosen = colorchooser.askcolor(title="Pick background color")
         if not chosen or not chosen[1]:
