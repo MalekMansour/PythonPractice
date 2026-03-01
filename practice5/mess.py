@@ -112,7 +112,6 @@ class CookieClicker:
         )
         self.btn_auto.pack(pady=6, ipadx=6, ipady=4)
 
-        # Utility row
         self.util_frame = tk.Frame(root, bg=self.bg_color)
         self.util_frame.pack(pady=(18, 0))
 
