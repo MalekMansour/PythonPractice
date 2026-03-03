@@ -1,3 +1,6 @@
+import pygame
+import sys
+
 def is_valid(board, row, col, num):
     # Check row
     if num in board[row]:
@@ -54,3 +57,50 @@ sudoku_board = [
 
 solve(sudoku_board)
 print_board(sudoku_board)
+
+
+pygame.init()
+WIDTH = 540
+HEIGHT = 540
+GRID_SIZE = 60
+FPS = 60
+
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Sudoku Solver")
+clock = pygame.time.Clock()
+
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+GRAY = (200, 200, 200)
+BLUE = (0, 0, 255)
+
+font = pygame.font.Font(None, 40)
+
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    
+    screen.fill(WHITE)
+    
+    # Draw grid
+    for i in range(10):
+        thickness = 3 if i % 3 == 0 else 1
+        pygame.draw.line(screen, BLACK, (i * GRID_SIZE, 0), (i * GRID_SIZE, HEIGHT), thickness)
+        pygame.draw.line(screen, BLACK, (0, i * GRID_SIZE), (WIDTH, i * GRID_SIZE), thickness)
+    
+    # Draw numbers
+    for row in range(9):
+        for col in range(9):
+            if sudoku_board[row][col] != 0:
+                num_text = font.render(str(sudoku_board[row][col]), True, BLUE)
+                x = col * GRID_SIZE + GRID_SIZE // 2 - num_text.get_width() // 2
+                y = row * GRID_SIZE + GRID_SIZE // 2 - num_text.get_height() // 2
+                screen.blit(num_text, (x, y))
+    
+    pygame.display.flip()
+    clock.tick(FPS)
+
+pygame.quit()
+sys.exit()
